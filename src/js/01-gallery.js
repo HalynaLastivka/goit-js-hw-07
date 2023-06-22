@@ -45,16 +45,17 @@ function onImgClick(event) {
      instance = basicLightbox.create(
     `<img src="${dataSource}" width="800" height="600">`)
 
-instance.show()
+  instance.show();
+  window.addEventListener('keydown', pressEsc);
 
 }
+  function pressEsc(event) {
+    console.log('hello');
+    if (event.key !== "Escape") {
+      return;
+    }
+    instance.close();
+    window.removeEventListener('keydown', pressEsc);
 
-window.addEventListener('keydown', pressEsc);
-
-function pressEsc(event) {
-
-  if (event.key !== "Escape") {
-    return;
   }
-  instance.close();
-}
+ 

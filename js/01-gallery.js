@@ -8,12 +8,9 @@ const newElImg = createLi(galleryItems);
 
 ulEl.insertAdjacentHTML('beforeend', newElImg);
 const refItem = document.querySelectorAll('.gallery__link');
-const liEl = document.querySelectorAll('.gallery__image');
 
 
-liEl.forEach(function (liItem) {
-    liItem.addEventListener('click', onImgClick); 
-})
+ulEl.addEventListener('click', onImgClick);
 
 
 // cancel event on ref
@@ -39,23 +36,33 @@ function createLi(gallery) {
 </li>`; }).join('');   
 }
 
-function onImgClick(event) {
-    const dataSource = event.currentTarget.getAttribute('data-source');
 
-     instance = basicLightbox.create(
-    `<img src="${dataSource}" width="800" height="600">`)
+function onImgClick(event) {
+
+  event.preventDefault();
+
+  const dataSource = event.target.dataset.source;
+  const instance = basicLightbox.create(`<img src="${dataSource}" width="800" height="600">`,
+	 {
+      onShow: (instance) => {
+        window.addEventListener('keydown', pressEsc);
+      },
+      onClose: (instance) => {
+        window.removeEventListener('keydown', pressEsc);
+      }
+    
+});
 
   instance.show();
+
   window.addEventListener('keydown', pressEsc);
 
-}
   function pressEsc(event) {
-    console.log('hello');
-    if (event.key !== "Escape") {
+    if (event.key !== 'Escape') {
       return;
     }
     instance.close();
     window.removeEventListener('keydown', pressEsc);
-
   }
+}
  

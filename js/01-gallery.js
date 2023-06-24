@@ -13,14 +13,6 @@ const refItem = document.querySelectorAll('.gallery__link');
 ulEl.addEventListener('click', onImgClick);
 
 
-// cancel event on ref
-refItem.forEach(function(link) {
-  link.addEventListener('click', function(event) {
-    event.preventDefault();
-  });
-});
-
-
 function createLi(gallery) {
 
    return gallery.map(({ preview, original, description }) => {
@@ -39,8 +31,13 @@ function createLi(gallery) {
 
 function onImgClick(event) {
 
+    if (!event.target.classList.contains('gallery__image')) {
+    return; 
+  }
+
   event.preventDefault();
 
+  
   const dataSource = event.target.dataset.source;
   const instance = basicLightbox.create(`<img src="${dataSource}" width="800" height="600">`,
 	 {
